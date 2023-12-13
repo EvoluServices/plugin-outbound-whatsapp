@@ -9,7 +9,12 @@ class TaskService {
   workflowSid = process.env.REACT_APP_WORKFLOW_SID;
   queueSid = process.env.REACT_APP_TASK_QUEUE_SID;
 
-  createTask = async (fromNumber, toNumber, initialNotificationMessage) => {
+  createTask = async (
+    fromNumber,
+    toNumber,
+    initialNotificationMessage,
+    merchant
+  ) => {
     let data = {
       fromNumber,
       toNumber,
@@ -19,6 +24,7 @@ class TaskService {
       workspaceSid: this.workspaceSid,
       workflowSid: this.workflowSid,
       queueSid: this.queueSid,
+      merchant: JSON.stringify(merchant),
     };
 
     return axios.post(this.baseUrl, data).then((response) => {

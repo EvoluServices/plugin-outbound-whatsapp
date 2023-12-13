@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import unidecode from 'unidecode';
 
 import taskService from '../../services/TaskService';
+import merchantService from '../../services/MerchantService';
 import getTemplatesService from '../../services/GetTemplatesService';
 import OutboundSenderIdSelector from '../OutboundSenderIdSelector/OuboundSenderIdSelector';
 
@@ -210,14 +211,19 @@ class OutboundWaDialog extends React.Component {
     });
   }
 
-  createTask() {
+  async createTask() {
     Actions.invokeAction('SetActivity', {
       activitySid: taskService.availableActivitySid,
     });
-    return taskService.createTask(
+    const merchant = await merchantService.findMerchantByPhoneNumber(
+      this.state.toNumber
+    );
+
+    return await taskService.createTask(
       this.state.fromNumber,
       '+55' + this.state.toNumber,
-      this.state.message
+      this.state.message,
+      merchant
     );
   }
 
