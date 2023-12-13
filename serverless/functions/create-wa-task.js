@@ -29,6 +29,7 @@ exports.handler = TokenValidator(async (context, event, callback) => {
     workspaceSid,
     workflowSid,
     queueSid,
+    merchant,
   } = params;
 
   console.log(`Processing request with parameters ${JSON.stringify(params)}`);
@@ -50,6 +51,7 @@ exports.handler = TokenValidator(async (context, event, callback) => {
         toNumber,
         fromNumber,
         initialNotificationMessage,
+        merchant,
         {
           workspace_sid: workspaceSid,
           workflow_sid: workflowSid,
@@ -79,6 +81,7 @@ exports.handler = TokenValidator(async (context, event, callback) => {
           toNumber,
           fromNumber,
           initialNotificationMessage,
+          merchant,
           {
             workspace_sid: workspaceSid,
             workflow_sid: workflowSid,
@@ -120,6 +123,7 @@ const validate = async (event) => {
     workspaceSid: string(),
     workflowSid: string(),
     queueSid: string(),
+    merchant: string(),
   });
   try {
     const params = await schema.validate(event, {
@@ -174,6 +178,7 @@ const openTaskInteraction = async (
   to,
   from,
   body,
+  merchant,
   routingProperties
 ) => {
   const toNumber = `whatsapp:${to}`;
@@ -205,6 +210,7 @@ const openTaskInteraction = async (
             twilioNumber: from,
             channelType: 'whatsapp',
             initialNotificationMessage: body,
+            merchant,
           },
         },
       },
